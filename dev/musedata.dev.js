@@ -128,13 +128,17 @@ function dummyConnector(interval){
   my.onMsg = function(){
    // console.log('dummyConnector.genMsg');
 
+   if(msgIndex>=data.length){
+    msgIndex=0; 
+    console.log('resetting msgIndex to ' + msgIndex);
+   }
    var msg = data[msgIndex];
-   msgIndex = msgIndex === (data.length -1 ) ? 0 : (msgIndex + 1);
+   msgIndex++;
 
    //console.log('msg',msg);
    //console.log('data',data);
      var id = msg[1];
-     console.log('id',id);
+    // console.log('id',id);
     var cback = callbacks[id];
 
     if(cback){
