@@ -1,6 +1,6 @@
-function museData(){
+function museData() {
 
- function my() {
+  function my() {
     // generate chart here, using `width` and `height`
   }
 
@@ -14,10 +14,10 @@ function museData(){
   };
 
   my.dummyData = function(interval) {
-   if (!arguments.length) {
-      return  dummyConnector();
+    if (!arguments.length) {
+      return dummyConnector();
     }
-   return dummyConnector(interval);
+    return dummyConnector(interval);
   };
 
   return my;
@@ -26,37 +26,37 @@ function museData(){
 
 
 
-function museConnector(_url){
-  
+function museConnector(_url) {
+
   var url = _url;
- // var ws = null;
- var socket = null;
+  // var ws = null;
+  var socket = null;
   var callbacks = [];
 
-  function my(){
+  function my() {
     console.log('museConnector.my');
   }
 
 
-  my.start = function(){
-     console.log('museConnector.start');
-     //ws = new WebSocket(url);
+  my.start = function() {
+    console.log('museConnector.start');
+    //ws = new WebSocket(url);
     socket = io.connect(url);
-     console.log('socket',socket);
+    console.log('socket', socket);
     // ws.onmessage = this.onMsg;
     socket.on('muse', this.onMsg);
 
-     return my;
+    return my;
   }
 
-  my.stop = function(){
+  my.stop = function() {
     console.log('museConnector.stop');
-    ws.onclose = function(){};
+    ws.onclose = function() {};
     ws.close();
     ws = null;
   }
 
-  my.listenTo = function(_id,_cb){
+  my.listenTo = function(_id, _cb) {
     console.log('museConnector.listenTo');
     //maybe here better to make and objec {id: callback: }
     //or maybe better not. 
@@ -64,25 +64,25 @@ function museConnector(_url){
     return my;
   }
 
-  my.onMsg = function(obj){
+  my.onMsg = function(obj) {
     //console.log('museConnector.onMsg: ',obj);
-     //var msg = obj.split(',');
+    //var msg = obj.split(',');
 
-     //convert numbers to numbers
-    var msg = obj.map(function(d){
-      if(isNaN(d)){
+    //convert numbers to numbers
+    var msg = obj.map(function(d) {
+      if (isNaN(d)) {
         return d;
       }
       return +d;
-     });
-    
+    });
+
 
 
     var id = msg[0];
-  //  console.log('id',id);
+    //  console.log('id',id);
     var cback = callbacks[id];
 
-    if(cback){
+    if (cback) {
       cback(msg);
     }
 
@@ -90,64 +90,71 @@ function museConnector(_url){
 
   }
 
-  my.disconnect = function(){
+  my.disconnect = function() {
     console.log('museConnector.disconnect');
     ws.close();
   }
 
-return my;
+  return my;
 
 }
 
 
-function dummyConnector(interval){
+function dummyConnector(interval) {
 
- console.log('dummyConnector');
+  console.log('dummyConnector');
   var ws = null;
-  var interval = interval ? interval : 200; 
+  var interval = interval ? interval : (1000/250);
   var callbacks = [];
   var intervalID = null;
   var data = [];
   var msgIndex = 0;
-  
 
-  function my(){
 
-    console.log('my');
-    
-    
+  function my() {
+
+    //console.log('my');
+
+
   }
 
-  my.listenTo = function(_id,_cb){
-      console.log('dummyConnector.listenTo');
-   
-      callbacks[_id] = _cb;
-      console.log('callbacks',callbacks);
-      return my;
+  my.listenTo = function(_id, _cb) {
+    console.log('dummyConnector.listenTo');
+
+    callbacks[_id] = _cb;
+    console.log('callbacks', callbacks);
+    return my;
   }
-  my.onMsg = function(){
-   // console.log('dummyConnector.genMsg');
+  my.onMsg = function() {
+    // console.log('dummyConnector.genMsg');
 
-   if(msgIndex>=data.length){
-    msgIndex=0; 
-    console.log('resetting msgIndex to ' + msgIndex);
-   }
-   var msg = data[msgIndex];
-   msgIndex++;
+    if (msgIndex >= data.length) {
+      msgIndex = 0;
+      console.log('resetting msgIndex to ' + msgIndex);
+    }
+    var msg = data[msgIndex];
+    msgIndex++;
 
-   //console.log('msg',msg);
-   //console.log('data',data);
-     var id = msg[1];
+
+
+    if (msg instanceof Array) {
+      //get rid of timestamp
+      msg.shift();
+    }
+
+    //console.log('msg',msg);
+    //console.log('data',data);
+    var id = msg[0];
     // console.log('id',id);
     var cback = callbacks[id];
 
-    if(cback){
+    if (cback) {
       cback(msg);
     }
     return my;
   }
 
-  my.start = function(){
+  my.start = function() {
     console.log('dummyConnector.start');
     data = exampleData();
     intervalID = setInterval(this.onMsg, interval);
@@ -155,8 +162,8 @@ function dummyConnector(interval){
 
   }
 
-  my.stop = function(){
-     console.log('dummyConnector.stop');
+  my.stop = function() {
+    console.log('dummyConnector.stop');
     clearInterval(intervalID);
     return my;
   }
@@ -166,12 +173,3 @@ function dummyConnector(interval){
   return my;
 
 };
-
-
-
-
-
-
-
-
-

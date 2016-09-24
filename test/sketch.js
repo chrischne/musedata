@@ -6,16 +6,16 @@
 muse = museData().dummyData();
 //muse = museData().dummyData(500);
 
-//setting up callbacks to specific id's
+
+
+function setup() {
+  //setting up callbacks to specific id's
 muse.listenTo('/muse/eeg',parseMsg);
 //muse.listenTo('/muse/elements/raw_fft0', parseMsg);
 
 //start data transmission
 muse.start();
 
-
-function setup() {
-  
 }
 
 function draw() {
