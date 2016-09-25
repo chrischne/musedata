@@ -104,7 +104,7 @@ function dummyConnector(interval) {
 
   console.log('dummyConnector');
   var ws = null;
-  var interval = interval ? interval : (1000/250);
+  var interval = interval ? interval : (1000 / 250);
   var callbacks = [];
   var intervalID = null;
   var data = [];
@@ -136,16 +136,11 @@ function dummyConnector(interval) {
     msgIndex++;
 
 
+    msg.shift();
 
-    if (msg instanceof Array) {
-      //get rid of timestamp
-      msg.shift();
-    }
 
-    //console.log('msg',msg);
-    //console.log('data',data);
     var id = msg[0];
-    // console.log('id',id);
+
     var cback = callbacks[id];
 
     if (cback) {
