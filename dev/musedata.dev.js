@@ -1,3 +1,13 @@
+/**
+
+  javascript interface to muse 
+  works with dummy data when no muse device is available
+  and uses socket.io to connect to a real muse device
+
+
+  Version: 2.0.0
+  
+*/
 function museData() {
 
   function my() {
@@ -32,6 +42,8 @@ function museConnector(_url) {
   // var ws = null;
   var socket = null;
   var callbacks = [];
+
+  //contains the current data for each listened id
   var dataContainer = [];
 
   function my() {
@@ -57,12 +69,20 @@ function museConnector(_url) {
     ws = null;
   }
 
-  my.listenTo = function(_id, _cb) {
+  my.listenTo = function(_id) {
     console.log('museConnector.listenTo');
     //maybe here better to make and objec {id: callback: }
     //or maybe better not. 
-    callbacks[_id] = _cb;
-    return my;
+    //  callbacks[_id] = _cb;
+    //return my;
+
+    //check if we already registered _id
+    if (!callbacks[_id]) {
+      callbacks[_id] = getCallback(_id);
+      dataContainer[_id] = {};
+    } else {
+      console.log('already listening to ' + _id);
+    }
   }
 
   my.onMsg = function(obj) {
@@ -84,7 +104,8 @@ function museConnector(_url) {
     var cback = callbacks[id];
 
     if (cback) {
-      cback(msg);
+      var jsonobj = cback(msg);
+      dataContainer[jsonobj.id] = jsonobj;
     }
 
     return my;
@@ -94,6 +115,19 @@ function museConnector(_url) {
   my.disconnect = function() {
     console.log('museConnector.disconnect');
     ws.close();
+  }
+
+  my.get = function(_id) {
+    if (!dataContainer[_id]) {
+      console.log('museData: no data available for id ' + _id);
+      console.log('make sure you call museData().listenTo( ' + _id + ')');
+      return {
+        id: _id,
+        value: 0
+      };
+    }
+
+    return dataContainer[_id];
   }
 
   return my;
@@ -111,7 +145,7 @@ function dummyConnector(interval) {
   var data = [];
   var msgIndex = 0;
 
-  //contains the registered data to listen to
+  //contains the current data for each listened id
   var dataContainer = [];
 
 
@@ -140,6 +174,7 @@ function dummyConnector(interval) {
     } else {
       console.log('already listening to ' + _id);
     }
+
   }
 
   my.onMsg = function() {
@@ -158,9 +193,7 @@ function dummyConnector(interval) {
 
     var id = msg[0];
 
-    if(id == '/muse/elements/raw_fft0'){
-    //  console.log('id: ' + id);
-    }
+
 
     var cback = callbacks[id];
 
@@ -222,14 +255,13 @@ function getCallback(_id) {
   var arrParser = function(msg) {
 
     var _id = msg[0];
-  //  console.log('arrParser: id: ' + _id );
+    //  console.log('arrParser: id: ' + _id );
     var _values = msg.slice(1);
     return {
       id: _id,
       values: _values
     };
   };
-
 
 
 
