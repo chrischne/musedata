@@ -204,19 +204,18 @@ function dummyConnector(interval) {
 function getCallback(_id) {
 
 
-
   var emptyParser = function(msg) {
     return {};
   };
 
-  var mellowParser = function(msg) {
+  var oneValueParser = function(msg) {
     return {
       id: msg[0],
       value: msg[1]
     };
   };
 
-  var raw_fft0Parser = function(msg) {
+  var arrParser = function(msg) {
 
     var _id = msg[0];
     var _values = msg.shift();
@@ -226,54 +225,57 @@ function getCallback(_id) {
     };
   };
 
-  var alpha_relativeParser = function(msg) {
-    return regularMuseObject(msg);
+
+
+
+  var regularParser = function(msg) {
+    return {
+      id: msg[0],
+      leftEar: msg[1],
+      leftFront: msg[2],
+      rightFront: msg[3],
+      rightEar: msg[4]
+    };
   };
 
 
-  var eegParser = function(msg) {
+  var regularParserMean = function(msg) {
 
-    /*
-    msg structure
-    [
-          1435306984.594,
-          "/muse/eeg",
-          957.378540039,
-          829.070068359,
-          815.91027832,
-          888.289367676
-    ]
-
-
-    */
-
-    return regularMuseObject(msg);
-
+    var obj = regularParser(msg);
+    obj.mean = calcMean(msg.slice(1));
+    return obj;
   };
 
   var fn = {
-    '/muse/eeg': eegParser,
-    '/muse/elements/alpha_relative': alpha_relativeParser,
-    'raw_fft0': raw_fft0Parser,
-    '/muse/elements/experimental/mellow': mellowParser,
-    '/muse/elements/alpha_relative': alpha_relativeParser
+    '/muse/eeg': regularParserMean,
+    '/muse/elements/alpha_relative': regularParserMean,
+    '/muse/elements/beta_relative': regularParserMean,
+    '/muse/elements/delta_relative': regularParserMean,
+    '/muse/elements/gamma_relative': regularParserMean,
+    '/muse/elements/theta_relative': regularParserMean,
+    '/muse/elements/horseshoe': regularParser,
+    '/muse/elements/is_good': regularParser,
+    '/muse/elements/blink': oneValueParser,
+    '/muse/elements/jaw_clench': oneValueParser,
+    '/muse/elements/touching_forehead': oneValueParser,
+    '/muse/elements/experimental/concentration': oneValueParser,
+    '/muse/elements/experimental/mellow': oneValueParser,
+    '/muse/elements/raw_fft0': arrParser,
+    '/muse/elements/raw_fft1': arrParser,
+    '/muse/elements/raw_fft2': arrParser,
+    '/muse/elements/raw_fft3': arrParser,
+    '/muse/elements/alpha_absolute': regularParserMean,
+    '/muse/elements/beta_absolute': regularParserMean,
+    '/muse/elements/delta_absolute': regularParserMean,
+    '/muse/elements/gamma_absolute': regularParserMean,
+    '/muse/elements/theta_absolute': regularParserMean,
+    '/muse/elements/is_good': regularParser,
   };
 
   return fn[_id] ? fn[_id] : emptyParser;
 }
 
 
-
-function regularMuseObject(msg) {
-  return {
-    id: msg[0],
-    leftEar: msg[1],
-    leftFront: msg[2],
-    rightFront: msg[3],
-    rightEar: msg[4],
-    mean: calcMean(msg.slice(1))
-  }
-}
 
 function calcMean(arr) {
   return calcSum(arr) / arr.length;

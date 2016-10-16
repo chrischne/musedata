@@ -18,7 +18,9 @@ muse.start();
 
 
 function setup() {
-  frameRate(1);
+  frameRate(10);
+  noLoop();
+
 }
 
 function draw() {
@@ -38,6 +40,11 @@ function draw() {
 	console.log(mellow);
 
 
+}
+
+function keyTyped(){
+	console.log('toggle draw loop');
+	redraw();
 }
 
 /*
