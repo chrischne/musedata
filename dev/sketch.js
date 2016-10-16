@@ -10,7 +10,7 @@ muse = museData().dummyData();
 //muse.listenTo('/muse/eeg',parseMsg);
 muse.listenTo('/muse/eeg');
 muse.listenTo('/muse//muse/elements/raw_fft0');
-muse.listenTO('/muse/elements/experimental/mellow');
+muse.listenTo('/muse/elements/experimental/mellow');
 //muse.listenTo('/muse/elements/raw_fft0', parseMsg);
 
 //start data transmission
@@ -18,7 +18,7 @@ muse.start();
 
 
 function setup() {
-  
+  frameRate(1);
 }
 
 function draw() {
