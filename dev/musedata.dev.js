@@ -143,7 +143,7 @@ function dummyConnector(interval) {
   }
 
   my.onMsg = function() {
-    // console.log('dummyConnector.genMsg');
+    //console.log('dummyConnector.onMsg');
 
     if (msgIndex >= data.length) {
       msgIndex = 0;
@@ -157,6 +157,10 @@ function dummyConnector(interval) {
 
 
     var id = msg[0];
+
+    if(id == '/muse/elements/raw_fft0'){
+    //  console.log('id: ' + id);
+    }
 
     var cback = callbacks[id];
 
@@ -218,7 +222,8 @@ function getCallback(_id) {
   var arrParser = function(msg) {
 
     var _id = msg[0];
-    var _values = msg.shift();
+  //  console.log('arrParser: id: ' + _id );
+    var _values = msg.slice(1);
     return {
       id: _id,
       values: _values

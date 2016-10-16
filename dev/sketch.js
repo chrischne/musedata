@@ -1,7 +1,6 @@
-
 //connection to muse
 //muse = museData().connection('http://127.0.0.1:8081');
-		
+
 //connection with dummyData
 muse = museData().dummyData();
 //muse = museData().dummyData(500);
@@ -9,7 +8,7 @@ muse = museData().dummyData();
 //setting up callbacks to specific id's
 //muse.listenTo('/muse/eeg',parseMsg);
 muse.listenTo('/muse/eeg');
-muse.listenTo('/muse//muse/elements/raw_fft0');
+muse.listenTo('/muse/elements/raw_fft0');
 muse.listenTo('/muse/elements/experimental/mellow');
 //muse.listenTo('/muse/elements/raw_fft0', parseMsg);
 
@@ -18,31 +17,27 @@ muse.start();
 
 
 function setup() {
-  frameRate(10);
-  noLoop();
-
+	frameRate(10);
+	noLoop();
 }
 
 function draw() {
-  
 
 	var eeg = muse.get('/muse/eeg');
 	console.log('eeg');
 	console.log(eeg);
 
-	var raw_fft0 = muse.get('/muse//muse/elements/raw_fft0');
+	var raw_fft0 = muse.get('/muse/elements/raw_fft0');
 	console.log('raw_fft0');
 	console.log(raw_fft0);
-
 
 	var mellow = muse.get('/muse/elements/experimental/mellow');
 	console.log('mellow');
 	console.log(mellow);
 
-
 }
 
-function keyTyped(){
+function keyTyped() {
 	console.log('toggle draw loop');
 	redraw();
 }
