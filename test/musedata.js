@@ -67,9 +67,10 @@ function museConnector(_url) {
 
   my.stop = function() {
     console.log('museConnector.stop');
-    ws.onclose = function() {};
+    /*ws.onclose = function() {};
     ws.close();
-    ws = null;
+    ws = null;*/
+    socket.disconnect();
   }
 
   my.listenTo = function(_id) {
