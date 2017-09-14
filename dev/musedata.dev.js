@@ -10,11 +10,13 @@
 */
 function museData() {
 
+  //TODO change my to md
   function my() {
     // generate chart here, using `width` and `height`
   }
 
   my.connection = function(url) {
+    //TODO connect to default url when no url is given
     console.log('museData.connection');
     if (!arguments.length) {
       console.log('museData.connection: no url for websocket specified');
@@ -23,6 +25,7 @@ function museData() {
     return museConnector(url);
   };
 
+  //TODO change to fakeData
   my.dummyData = function(interval) {
     if (!arguments.length) {
       return dummyConnector();
@@ -50,7 +53,7 @@ function museConnector(_url) {
     console.log('museConnector.my');
   }
 
-
+  //TODO, call this already in the beginning or so, so the user doesnt have to do it
   my.start = function() {
     console.log('museConnector.start');
     //ws = new WebSocket(url);
@@ -118,6 +121,9 @@ function museConnector(_url) {
     ws.close();
   }
 
+  //TODO invoke a listenTo if id is not there, lazy init
+  //maybe make a list of valid ids
+  //and if id is not in the list, then throw and error
   my.get = function(_id) {
     if (!dataContainer[_id]) {
       console.log('museData: no data available for id ' + _id);
