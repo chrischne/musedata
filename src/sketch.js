@@ -5,40 +5,19 @@
 muse = museData().dummyData();
 //musefake = museData().dummyData();
 
-muse.listenTo('/muse/eeg');
-muse.listenTo('/muse/elements/alpha_relative');
-muse.listenTo('/muse/elements/beta_relative');
-muse.listenTo('/muse/elements/delta_relative');
-muse.listenTo('/muse/elements/gamma_relative');
-muse.listenTo('/muse/elements/theta_relative');
-muse.listenTo('/muse/elements/horseshoe');
-muse.listenTo('/muse/elements/is_good');
-muse.listenTo('/muse/elements/blink');
-muse.listenTo('/muse/elements/jaw_clench');
-muse.listenTo('/muse/elements/touching_forehead');
-muse.listenTo('/muse/elements/experimental/concentration');
-muse.listenTo('/muse/elements/experimental/mellow');
-muse.listenTo('/muse/elements/raw_fft0');
-muse.listenTo('/muse/elements/raw_fft1');
-muse.listenTo('/muse/elements/raw_fft2');
-muse.listenTo('/muse/elements/raw_fft3');
-muse.listenTo('/muse/elements/alpha_absolute');
-muse.listenTo('/muse/elements/beta_absolute');
-muse.listenTo('/muse/elements/delta_absolute');
-muse.listenTo('/muse/elements/gamma_absolute');
-muse.listenTo('/muse/elements/theta_absolute');
+listenToAll(muse);
 
 
 //start data transmission
 muse.start();
 
-var STATE_REAL = 'state_real';
-var STATE_DUMMY = 'state_dummy';
-var STATE = STATE_REAL;
+var STATE_REAL = 'real';
+var STATE_DUMMY = 'dummy';
+var state = STATE_DUMMY;
 
 function setup() {
 	createCanvas(800,600);
-	frameRate(10);
+	frameRate(5);
 
 }
 
@@ -48,11 +27,13 @@ function draw() {
 
 
 	/*if(STATE == STATE_REAL){
-		realTest();
+		
 	}
 	else if(STATE == STATE_DUMMY){
 		dummyTest();
 	}*/
+
+	console.log('state: ' + state);
 
 
 
@@ -81,50 +62,149 @@ function draw() {
 
 
 push();
-text('Muse Data',20,20);
 var gap = 20;
 var left = 50;
+translate(left,gap);
+text('Muse Data ' + state + '   ( type key to switch between fake and real data )',0,0);
+
 push();
-translate(gap,left);
+translate(0,gap);
+translate(0,gap);
 drawElectrodes(eeg);
-//drawElectrodes('delta_relative',delta_relative);
-//drawElectrodes('theta_relative',theta_relative);
-//drawElectrodes('alpha_relative',alpha_relative);
-//drawElectrodes('beta_relative',beta_relative);
-//drawElectrodes('gamma_relative',gamma_relative);
-//drawElectrodes('delta_absolute',delta_absolute);
-//drawElectrodes('theta_absolute',theta_absolute);
-//drawElectrodes('alpha_absolute',alpha_absolute);
-//drawElectrodes('beta_absolute',beta_absolute);
-//drawElectrodes('gamma_absolute',gamma_absolute);
-//drawOneValue('blink',blink);
-//drawOneValue('is_good',is_good);
-//drawOneValue('jaw_clench',jaw_clench);
-//drawOneValue('touching_forehead',touching_forehead);
-//drawOneValue('concentration',concentration);
-//drawOneValue('mellow',mellow);
-//drawRawFFT('raw_fft0',raw_fft0);
-//drawRawFFT('raw_fft1',raw_fft1);
-//drawRawFFT('raw_fft2',raw_fft2);
-//drawRawFFT('raw_fft3',raw_fft3);
+translate(0,gap);
+drawElectrodes(delta_relative);
+translate(0,gap);
+drawElectrodes(theta_relative);
+translate(0,gap);
+drawElectrodes(alpha_relative);
+translate(0,gap);
+drawElectrodes(beta_relative);
+translate(0,gap);
+drawElectrodes(gamma_relative);
+translate(0,gap);
+drawElectrodes(delta_absolute);
+translate(0,gap);
+drawElectrodes(theta_absolute);
+translate(0,gap);
+drawElectrodes(alpha_absolute);
+translate(0,gap);
+drawElectrodes(beta_absolute);
+translate(0,gap);
+drawElectrodes(gamma_absolute);
+translate(0,gap);
+drawOneValue(blink);
+translate(0,gap);
+drawElectrodes(is_good);
+translate(0,gap);
+drawOneValue(jaw_clench);
+translate(0,gap);
+drawOneValue(touching_forehead);
+translate(0,gap);
+drawOneValue(concentration);
+translate(0,gap);
+drawOneValue(mellow);
+translate(0,gap);
+drawRawFFT(raw_fft0);
+translate(0,gap);
+drawRawFFT(raw_fft1);
+translate(0,gap);
+drawRawFFT(raw_fft2);
+translate(0,gap);
+drawRawFFT(raw_fft3);
 pop();
 }
 
-function drawElectrodes(data){
 
+function keyTyped(){
+	console.log('key' + key);
+	if(state == STATE_REAL){
+		state = STATE_DUMMY;
+		muse.stop();
+		muse = null;
+		muse = museData().dummyData();
+		muse.start();
+	}
+	else if(state == STATE_DUMMY){
+		state = STATE_REAL;
+		muse.stop();
+		muse = null;
+		muse = museData().connection('http://127.0.0.1:8081');
+		muse.start();
+	}
+}
+
+function drawOneValue(data){
+	if(!data || !data.id){
+		text('no data',0,0);
+		return;
+	}
+	var s = oneValueString(data);
+	text(s,0,0);
+}
+
+function drawElectrodes(data){
 	if(!data || !data.id){
 		text('no data',0,0);
 		return;
 	}
 	var s = electrodeString(data);
 	text(s,0,0);
-	console.log(data);
-	
+	//console.log(data);
+}
+function drawRawFFT(data){
+	if(!data || !data.id){
+		text('no data',0,0);
+		return;
+	}
+	var s = rawFFTString(data);
+	text(s,0,0);
 }
 
 function electrodeString(d){
-	return d.id + '     leftEar: ' + nf(d.leftEar,null,1) + '     leftFront: ' + nf(d.leftFront,null,1) + '     rightFront: ' + nf(d.rightFront,null,1) + '     rightEar: ' + nf(d.rightEar,null,1); 	
+	var prec = 3;
+	return d.id + '     leftEar: ' + nf(d.leftEar,null,prec) + '     leftFront: ' + nf(d.leftFront,null,prec) + '     rightFront: ' + nf(d.rightFront,null,prec) + '     rightEar: ' + nf(d.rightEar,null,prec); 	
 }
+
+function oneValueString(d){
+	return d.id + '     ' + d.value;
+}
+
+function rawFFTString(d){
+	var selection = d.values.slice(0,10);
+	selection = selection.map(function(a){
+		return nf(a,null,1);
+	});
+	var arrstring = selection.join(' ');
+	return d.id + '     ' + arrstring;
+}
+
+
+function listenToAll(m){
+m.listenTo('/muse/eeg');
+m.listenTo('/muse/elements/alpha_relative');
+m.listenTo('/muse/elements/beta_relative');
+m.listenTo('/muse/elements/delta_relative');
+m.listenTo('/muse/elements/gamma_relative');
+m.listenTo('/muse/elements/theta_relative');
+m.listenTo('/muse/elements/horseshoe');
+m.listenTo('/muse/elements/is_good');
+m.listenTo('/muse/elements/blink');
+m.listenTo('/muse/elements/jaw_clench');
+m.listenTo('/muse/elements/touching_forehead');
+m.listenTo('/muse/elements/experimental/concentration');
+m.listenTo('/muse/elements/experimental/mellow');
+m.listenTo('/muse/elements/raw_fft0');
+m.listenTo('/muse/elements/raw_fft1');
+m.listenTo('/muse/elements/raw_fft2');
+m.listenTo('/muse/elements/raw_fft3');
+m.listenTo('/muse/elements/alpha_absolute');
+m.listenTo('/muse/elements/beta_absolute');
+m.listenTo('/muse/elements/delta_absolute');
+m.listenTo('/muse/elements/gamma_absolute');
+m.listenTo('/muse/elements/theta_absolute');
+}
+
+
 
 /*
 put this callback into museData in order to make things easier
