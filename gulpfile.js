@@ -1,8 +1,10 @@
 var gulp = require('gulp');
+var stylish = require('jshint-stylish');
+var jshint = require('gulp-jshint');
 //var gutil = require('gulp-util');
-//var concat = require('gulp-concat');
-//var uglify = require('gulp-uglify');
-//var del = require('del');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var del = require('del');
 //var useref = require('gulp-useref');
 //var gulpif = require('gulp-if');
 var webserver = require('gulp-webserver');
@@ -30,6 +32,7 @@ gulp.task("convert", function(){
 });
 
 //---------------
+
 //serves the development version
 gulp.task('serve', function() {
   gulp.src('src')
@@ -40,62 +43,9 @@ gulp.task('serve', function() {
     }));
 });
 
-gulp.task('html-dist', function () {
-    return gulp.src('app/index.html')
-        .pipe(useref())
-        .pipe(gulpif('*.js', uglify()))
-        .pipe(gulpif('*.css', minifyCss()))
-        .pipe(gulp.dest('dist'));
-});
-
-gulp.task('images-dist',function(){
-	 return gulp.src('app/img/*.png')
-	 	.pipe(gulp.dest('dist/img'));
-});
-
-gulp.task('login-dist',function(){
-	return gulp.src('app/login/*')
-	 	.pipe(gulp.dest('dist/login'));
-});
-
-gulp.task('font-dist',function(){
-  return gulp.src('app/vendor/fonts/*')
-    .pipe(gulp.dest('dist/fonts'));
-});
-
-gulp.task('robots-dist',function(){
-  return gulp.src('app/robots.txt')
-    .pipe(gulp.dest('dist'));
-});
-
-gulp.task('app-capable',function(){
-  return gulp.src(['app/apple-touch-icon.png','app/manifest.json'])
-    .pipe(gulp.dest('dist'));
-});
-
-gulp.task('clean',function(){
-	del('dist/*');
-});
-
-gulp.task('empty',['clean'],function(){
-	 return gulp.src('assets/emptyindex.html')
-    .pipe(rename('index.html'))
-    .pipe(gulp.dest('dist'));
-});
-
-
-gulp.task('build',['clean'],function(){
-	gulp.start('build2');
-})
-
-gulp.task('build2',['robots-dist','login-dist','images-dist','html-dist','font-dist','app-capable'],function(){
-	console.log('built!!!');
-});
-
-
-
-gulp.task('serve-dist', function() {
-  gulp.src('dist')
+//serves the test version
+gulp.task('serve-test', function() {
+  gulp.src('test')
     .pipe(webserver({
       livereload: false,
       directoryListing: false,
@@ -103,12 +53,50 @@ gulp.task('serve-dist', function() {
     }));
 });
 
+//------------
+//build
 
-gulp.task('default',['serve']);
-
-gulp.task('deploy', function() {
-  return gulp.src('./dist/**/*')
-    .pipe(ghPages());
+//['src/musedata.dev.js','src/exampledata.js','socket.io-1.4.5.js']
+gulp.task('build-pretty',function(){
+  gulp.src('src/js/*.js')
+    .pipe(prettify())
+    .pipe(concat('musedata.js'))
+    .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('test'));
 });
+
+gulp.task('build-min',function(){
+  gulp.src('src/js/*.js')
+    .pipe(concat('musedata.min.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('test'));
+});
+
+gulp.task('build',['clean'],function(){
+  gulp.start('build2');
+});
+
+gulp.task('build2',['build-pretty','build-min'],function(){
+  return 'built!!!';
+});
+
+
+gulp.task('clean',function(){
+  del('dist/*');
+});
+
+//------------
+//linting
+gulp.task('lint', function() {
+  return gulp.src('src/js/*.js')
+    .pipe(jshint())
+    .pipe(jshint.reporter(stylish))
+    .pipe(jshint.reporter('fail'));
+});
+
+//------------
+//default
+gulp.task('default',['serve']);
 
 

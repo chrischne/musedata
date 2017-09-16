@@ -34,7 +34,7 @@ function museData() {
 
   return my;
 
-};
+}
 
 
 
@@ -62,7 +62,7 @@ function museConnector(_url) {
     socket.on('muse', this.onMsg);
 
     return my;
-  }
+  };
 
   my.stop = function() {
     console.log('museConnector.stop');
@@ -70,7 +70,7 @@ function museConnector(_url) {
     ws.close();
     ws = null;*/
     socket.disconnect();
-  }
+  };
 
   my.listenTo = function(_id) {
     console.log('museConnector.listenTo');
@@ -86,7 +86,7 @@ function museConnector(_url) {
     } else {
       console.log('already listening to ' + _id);
     }
-  }
+  };
 
   my.onMsg = function(obj) {
     //console.log('museConnector.onMsg: ',obj);
@@ -113,12 +113,12 @@ function museConnector(_url) {
 
     return my;
 
-  }
+  };
 
   my.disconnect = function() {
     console.log('museConnector.disconnect');
     ws.close();
-  }
+  };
 
   //TODO invoke a listenTo if id is not there, lazy init
   //maybe make a list of valid ids
@@ -134,18 +134,18 @@ function museConnector(_url) {
     }
 
     return dataContainer[_id];
-  }
+  };
 
   return my;
 
 }
 
 
-function dummyConnector(interval) {
+function dummyConnector(_interval) {
 
   console.log('dummyConnector');
   var ws = null;
-  var interval = interval ? interval : (1000 / 250);
+  var interval = _interval ? _interval : (1000 / 250);
   var callbacks = [];
   var intervalID = null;
   var data = [];
@@ -182,7 +182,7 @@ function dummyConnector(interval) {
       console.log('already listening to ' + _id);
     }
 
-  }
+  };
 
   var secondround = false;
 
@@ -221,7 +221,7 @@ function dummyConnector(interval) {
       dataContainer[jsonobj.id] = jsonobj;
     }
     return my;
-  }
+  };
 
   my.start = function() {
     console.log('dummyConnector.start');
@@ -229,13 +229,13 @@ function dummyConnector(interval) {
     intervalID = setInterval(this.onMsg, interval);
     return my;
 
-  }
+  };
 
   my.stop = function() {
     console.log('dummyConnector.stop');
     clearInterval(intervalID);
     return my;
-  }
+  };
 
   my.get = function(_id) {
     if (!dataContainer[_id]) {
@@ -248,13 +248,13 @@ function dummyConnector(interval) {
     }
 
     return dataContainer[_id];
-  }
+  };
 
 
 
   return my;
 
-};
+}
 
 
 function getCallback(_id) {
@@ -324,8 +324,7 @@ function getCallback(_id) {
     '/muse/elements/beta_absolute': regularParserMean,
     '/muse/elements/delta_absolute': regularParserMean,
     '/muse/elements/gamma_absolute': regularParserMean,
-    '/muse/elements/theta_absolute': regularParserMean,
-    '/muse/elements/is_good': regularParser,
+    '/muse/elements/theta_absolute': regularParserMean
   };
 
   return fn[_id] ? fn[_id] : emptyParser;
