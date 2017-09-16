@@ -1,0 +1,27 @@
+{
+  "name": "musedata",
+  "version": "1.0.0",
+  "description": "#TODO We need to create a python script which transforms the csv to some proper json. Then another script which creates a .js file with function based on the json.",
+  "main": " ",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrischne/musedata.git"
+  },
+  "author": "Christian Schneider",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chrischne/musedata/issues"
+  },
+  "homepage": "https://github.com/chrischne/musedata#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-csv2json": "^0.2.5",
+    "gulp-run": "^1.7.1"
+  }
+}
