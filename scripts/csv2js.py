@@ -4,16 +4,11 @@ import sys
 import csv
 import os
 
-print('hi')
-print("This is the name of the script: ", sys.argv[0])
-print("Number of arguments: ", len(sys.argv))
-print("The arguments are: " , str(sys.argv))
 
 infile = sys.argv[1]
 outfile = os.path.splitext(infile)[0]+'.js'
 
-print('infile: ',infile)
-print('outfile', outfile)
+print('converting ' + infile + ' to ' + outfile)
 
 arr = list()
 

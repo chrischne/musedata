@@ -11,18 +11,25 @@ var gulp = require('gulp');
 var rename = require("gulp-rename");
 var csv2json = require('gulp-csv2json');
 var run = require('gulp-run')
+var prettify = require('gulp-jsbeautifier');
 
 var csvParseOptions = {};
 
-gulp.task('eeg', function () {
-    return gulp.src('eeg_data/*.csv')
+gulp.task('eeg', ['csv2js'],function () {
+    return gulp.src('eeg/*.js')
         .pipe(csv2json(csvParseOptions))
         .pipe(rename({extname: '.json'}))
         .pipe(gulp.dest('eeg_data'));
 });
 
-gulp.task("python-test", function(){
-    return run("python ./test.py").exec();
+gulp.task("csv2js", ['convert'], function(){
+     return gulp.src('eeg/*.js')
+        .pipe(prettify())
+        .pipe(gulp.dest('eeg'));
+});
+
+gulp.task("convert", function(){
+    return run("python ./scripts/csv2js.py ./eeg/exampledata.csv").exec();
 });
 
 
