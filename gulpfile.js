@@ -5,7 +5,7 @@ var gulp = require('gulp');
 //var del = require('del');
 //var useref = require('gulp-useref');
 //var gulpif = require('gulp-if');
-//var webserver = require('gulp-webserver');
+var webserver = require('gulp-webserver');
 //var minifyCss = require('gulp-clean-css');
 //var ghPages = require('gulp-gh-pages');
 var rename = require("gulp-rename");
@@ -20,17 +20,25 @@ gulp.task('eeg', ['csv2js'],function () {
         .pipe(rename('exampledata.js'))
         .pipe(gulp.dest('src'));
 });
-
 gulp.task("csv2js", ['convert'], function(){
      return gulp.src('eeg/*.js')
         .pipe(prettify())
         .pipe(gulp.dest('eeg'));
 });
-
 gulp.task("convert", function(){
     return run("python ./scripts/csv2js.py ./eeg/exampledata.csv").exec();
 });
 
+//---------------
+//serves the development version
+gulp.task('serve', function() {
+  gulp.src('src')
+    .pipe(webserver({
+      livereload: false,
+      directoryListing: false,
+      open: true
+    }));
+});
 
 gulp.task('html-dist', function () {
     return gulp.src('app/index.html')
@@ -84,14 +92,7 @@ gulp.task('build2',['robots-dist','login-dist','images-dist','html-dist','font-d
 	console.log('built!!!');
 });
 
-gulp.task('serve', function() {
-  gulp.src('app')
-    .pipe(webserver({
-      livereload: false,
-      directoryListing: false,
-      open: true
-    }));
-});
+
 
 gulp.task('serve-dist', function() {
   gulp.src('dist')

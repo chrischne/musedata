@@ -23,6 +23,7 @@
     "gulp": "^3.9.1",
     "gulp-csv2json": "^0.2.5",
     "gulp-jsbeautifier": "^2.1.1",
-    "gulp-run": "^1.7.1"
+    "gulp-run": "^1.7.1",
+    "gulp-webserver": "^0.9.1"
   }
 }
