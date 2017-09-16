@@ -44,7 +44,7 @@ gulp.task('serve', function() {
 });
 
 //serves the test version
-gulp.task('serve-test', function() {
+gulp.task('serve-test', ['build'], function() {
   gulp.src('test')
     .pipe(webserver({
       livereload: false,
@@ -96,6 +96,6 @@ gulp.task('lint', function() {
 
 //------------
 //default
-gulp.task('default',['serve']);
+gulp.task('default',['serve-test']);
 
 
