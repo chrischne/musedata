@@ -13,13 +13,12 @@ var csv2json = require('gulp-csv2json');
 var run = require('gulp-run')
 var prettify = require('gulp-jsbeautifier');
 
-var csvParseOptions = {};
-
+//converts raw csv file to exampledata.js 
+//and copies exampledata.js to src
 gulp.task('eeg', ['csv2js'],function () {
     return gulp.src('eeg/*.js')
-        .pipe(csv2json(csvParseOptions))
-        .pipe(rename({extname: '.json'}))
-        .pipe(gulp.dest('eeg_data'));
+        .pipe(rename('exampledata.js'))
+        .pipe(gulp.dest('src'));
 });
 
 gulp.task("csv2js", ['convert'], function(){
