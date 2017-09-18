@@ -19,7 +19,7 @@
     "url": "https://github.com/chrischne/musedata/issues"
   },
   "homepage": "https://github.com/chrischne/musedata#readme",
-  "devDependencies": {
+  "dependencies": {
     "del": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
