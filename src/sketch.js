@@ -20,15 +20,18 @@ function setup() {
     console.log('state in setup: ' + state);
 
     if(state == STATE_REAL){
+        //TODO change to musedata.connect() with url as option, but use a default
         muse = museData().connection('http://127.0.0.1:8081');
     }
     else {
+        //TODO changed to musedata().fake()
         muse = museData().dummyData();
     }
     listenToAll(muse);
 
     //start data transmission
-muse.start();
+    //TODO move muse.start() onto library level to make things less complicated
+    muse.start();
 }
 
 function draw() {
@@ -55,6 +58,8 @@ function draw() {
     console.log('state: ' + state);
 
 
+    //TODO make convenience functions
+    //muse.alpha(), muse.horseshoe()
     var eeg = muse.get('/muse/eeg');
     var alpha_relative = muse.get('/muse/elements/alpha_relative');
     var beta_relative = muse.get('/muse/elements/beta_relative');
@@ -202,6 +207,8 @@ function rawFFTString(d) {
 
 
 function listenToAll(m) {
+    //TODO put listenTo onto library level and add it on demand
+    //add alpha_relative etc by default
     m.listenTo('/muse/eeg');
     m.listenTo('/muse/elements/alpha_relative');
     m.listenTo('/muse/elements/beta_relative');
