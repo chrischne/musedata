@@ -2,35 +2,55 @@
 //muse = museData().connection('http://127.0.0.1:8081');
 
 //connection with dummyData
-muse = museData().dummyData();
+var muse = null;
+//museData().dummyData();
 //musefake = museData().dummyData();
-
-listenToAll(muse);
-
-
-//start data transmission
-muse.start();
 
 var STATE_REAL = 'real';
 var STATE_DUMMY = 'dummy';
-var state = STATE_DUMMY;
+var state = STATE_REAL;
+
+var hans = 'dudud';
 
 function setup() {
     createCanvas(800, 600);
     frameRate(5);
+
+    console.log('hanse ' + hans );
+    console.log('state in setup: ' + state);
+
+    if(state == STATE_REAL){
+        muse = museData().connection('http://127.0.0.1:8081');
+    }
+    else {
+        muse = museData().dummyData();
+    }
+    listenToAll(muse);
+
+    //start data transmission
+muse.start();
 }
 
 function draw() {
 
     background(255);
 
-
-    /*if(STATE == STATE_REAL){
-    	
+    if(muse == null){
+        background('red');
+        return;
     }
-    else if(STATE == STATE_DUMMY){
-    	dummyTest();
-    }*/
+
+
+    if(state == STATE_REAL){
+    	background('pink');
+    }
+    else if(state == STATE_DUMMY){
+        background('green');
+    }
+    else {
+        background('red');
+        return;
+    }
 
     console.log('state: ' + state);
 
@@ -114,20 +134,24 @@ function draw() {
 
 
 function keyTyped() {
+    noLoop();
     console.log('key' + key);
     if (state == STATE_REAL) {
         state = STATE_DUMMY;
         muse.stop();
         muse = null;
         muse = museData().dummyData();
+        listenToAll(muse);
         muse.start();
     } else if (state == STATE_DUMMY) {
         state = STATE_REAL;
         muse.stop();
         muse = null;
         muse = museData().connection('http://127.0.0.1:8081');
+        listenToAll(muse);
         muse.start();
     }
+    loop();
 }
 
 function drawOneValue(data) {
