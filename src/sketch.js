@@ -8,20 +8,12 @@ var state = STATE_REAL;
 function setup() {
     createCanvas(800, 600);
     frameRate(5);
-
-    console.log('state in setup: ' + state);
-
     if(state == STATE_REAL){
         muse = musedata().connect();
     }
     else {
         muse = musedata().fake();
     }
-    //listenToAll(muse);
-
-    //start data transmission
-    //TODO move muse.start() onto library level to make things less complicated
-    //muse.start();
 }
 
 function draw() {
@@ -33,7 +25,7 @@ function draw() {
         background('red');
         return;
     }
-
+    
 
     if(state == STATE_REAL){
     	background('pink');
@@ -138,15 +130,11 @@ function keyTyped() {
         muse.stop();
         muse = null;
         muse = musedata().fake();
-       // listenToAll(muse);
-       // muse.start();
     } else if (state == STATE_DUMMY) {
         state = STATE_REAL;
         muse.stop();
         muse = null;
         muse = musedata().connect();
-      //  listenToAll(muse);
-       // muse.start();
     }
     loop();
 }
@@ -196,44 +184,3 @@ function rawFFTString(d) {
     var arrstring = selection.join(' ');
     return d.id + '     ' + arrstring;
 }
-
-/*
-function listenToAll(m) {
-    //TODO put listenTo onto library level and add it on demand
-    //add alpha_relative etc by default
-    m.listenTo('/muse/eeg');
-    m.listenTo('/muse/elements/alpha_relative');
-    m.listenTo('/muse/elements/beta_relative');
-    m.listenTo('/muse/elements/delta_relative');
-    m.listenTo('/muse/elements/gamma_relative');
-    m.listenTo('/muse/elements/theta_relative');
-    m.listenTo('/muse/elements/horseshoe');
-    m.listenTo('/muse/elements/is_good');
-    m.listenTo('/muse/elements/blink');
-    m.listenTo('/muse/elements/jaw_clench');
-    m.listenTo('/muse/elements/touching_forehead');
-    m.listenTo('/muse/elements/experimental/concentration');
-    m.listenTo('/muse/elements/experimental/mellow');
-    m.listenTo('/muse/elements/raw_fft0');
-    m.listenTo('/muse/elements/raw_fft1');
-    m.listenTo('/muse/elements/raw_fft2');
-    m.listenTo('/muse/elements/raw_fft3');
-    m.listenTo('/muse/elements/alpha_absolute');
-    m.listenTo('/muse/elements/beta_absolute');
-    m.listenTo('/muse/elements/delta_absolute');
-    m.listenTo('/muse/elements/gamma_absolute');
-    m.listenTo('/muse/elements/theta_absolute');
-}
-*/
-
-
-/*
-put this callback into museData in order to make things easier
-
-function parseMsg(msg) {
-		console.log('parseMsg',msg);
-		//console.log('this',this);
-  
-  
-}
-*/
