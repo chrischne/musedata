@@ -53,8 +53,6 @@ function museConnection(_url) {
     
   }
 
-
-
   //TODO, call this already in the beginning or so, so the user doesnt have to do it
   my.start = function() {
     console.log('museConnector.start');
@@ -104,8 +102,6 @@ function museConnection(_url) {
       return +d;
     });
 
-
-
     var id = msg[0];
     //  console.log('id',id);
     var cback = callbacks[id];
@@ -129,51 +125,16 @@ function museConnection(_url) {
   //and if id is not in the list, then throw and error
   my.get = function(_id) {
     if (!dataContainer[_id]) {
-      console.log('museData: no data available for id ' + _id);
-      console.log('make sure you call museData().listenTo( ' + _id + ')');
-      return {
-        id: _id,
-        value: 0
-      };
+      console.log('invoking listenTo ' + _id);
+      my.listenTo(_id);
+      //console.log('make sure you call museData().listenTo( ' + _id + ')');
+      return zeroObj(_id);
     }
 
     return dataContainer[_id];
   };
 
   my.init = function(){
-
-    //TODO check if identifier is valid and and listen to it in get
-    //listen to a bunch of signals which are likely to be used
-    my.listenTo('/muse/elements/alpha_relative');
-    my.listenTo('/muse/elements/beta_relative');
-    my.listenTo('/muse/elements/delta_relative');
-    my.listenTo('/muse/elements/gamma_relative');
-    my.listenTo('/muse/elements/theta_relative');
-    my.listenTo('/muse/elements/horseshoe');
-    //my.listenTo('/muse/elements/experimental/concentration');
-    //my.listenTo('/muse/elements/experimental/mellow');
-  /*  my.listenTo('/muse/eeg');
-    my.listenTo('/muse/elements/alpha_relative');
-    my.listenTo('/muse/elements/beta_relative');
-    my.listenTo('/muse/elements/delta_relative');
-    my.listenTo('/muse/elements/gamma_relative');
-    my.listenTo('/muse/elements/theta_relative');
-    my.listenTo('/muse/elements/horseshoe');
-    my.listenTo('/muse/elements/is_good');
-    my.listenTo('/muse/elements/blink');
-    my.listenTo('/muse/elements/jaw_clench');
-    my.listenTo('/muse/elements/touching_forehead');
-    my.listenTo('/muse/elements/experimental/concentration');
-    my.listenTo('/muse/elements/experimental/mellow');
-    my.listenTo('/muse/elements/raw_fft0');
-    my.listenTo('/muse/elements/raw_fft1');
-    my.listenTo('/muse/elements/raw_fft2');
-    my.listenTo('/muse/elements/raw_fft3');
-    my.listenTo('/muse/elements/alpha_absolute');
-    my.listenTo('/muse/elements/beta_absolute');
-    my.listenTo('/muse/elements/delta_absolute');
-    my.listenTo('/muse/elements/gamma_absolute');
-    my.listenTo('/muse/elements/theta_absolute');*/
 
     my.start();
 
@@ -372,6 +333,156 @@ function getCallback(_id) {
   };
 
   return fn[_id] ? fn[_id] : emptyParser;
+}
+
+function zeroObj(id){
+
+    var zeroes = {
+    '/muse/eeg': {
+      id: '/muse/eeg',
+      leftEar: 0,
+      leftFront: 0,
+      rightFront: 0,
+      rightEar: 0,
+      mean: 0
+    },
+    '/muse/elements/alpha_relative': {
+      id: '/muse/elements/alpha_relative',
+      leftEar: 0,
+      leftFront: 0,
+      rightFront: 0,
+      rightEar: 0,
+      mean: 0
+    },
+    '/muse/elements/beta_relative': {
+      id: '/muse/elements/beta_relative',
+      leftEar: 0,
+      leftFront: 0,
+      rightFront: 0,
+      rightEar: 0,
+      mean: 0
+    },
+    '/muse/elements/delta_relative': {
+      id: '/muse/elements/delta_relative',
+      leftEar: 0,
+      leftFront: 0,
+      rightFront: 0,
+      rightEar: 0,
+      mean: 0
+    },
+    '/muse/elements/gamma_relative': {
+      id: '/muse/elements/gamma_relative',
+      leftEar: 0,
+      leftFront: 0,
+      rightFront: 0,
+      rightEar: 0,
+      mean: 0
+    },
+    '/muse/elements/theta_relative': {
+      id: '/muse/elements/theta_relative',
+      leftEar: 0,
+      leftFront: 0,
+      rightFront: 0,
+      rightEar: 0,
+      mean: 0
+    },
+    '/muse/elements/horseshoe':  {
+      id: '/muse/elements/horseshoe',
+      leftEar: 0,
+      leftFront: 0,
+      rightFront: 0,
+      rightEar: 0
+    },
+    '/muse/elements/is_good': {
+      id: '/muse/elements/is_good',
+      leftEar: 0,
+      leftFront: 0,
+      rightFront: 0,
+      rightEar: 0
+    },
+    '/muse/elements/blink': {
+      id: '/muse/elements/blink',
+      value: 0
+    },
+    '/muse/elements/jaw_clench': {
+      id: '/muse/elements/jaw_clench',
+      value: 0
+    },
+    '/muse/elements/touching_forehead': {
+      id: '/muse/elements/touching_forehead',
+      value: 0
+    },
+    '/muse/elements/experimental/concentration': {
+      id: '/muse/elements/experimental/concentration',
+      value: 0
+    },
+    '/muse/elements/experimental/mellow': {
+      id: '/muse/elements/experimental/mellow',
+      value: 0
+    },
+    '/muse/elements/raw_fft0': {
+      id: '/muse/elements/raw_fft0',
+      values: []
+    },
+    '/muse/elements/raw_fft1': {
+      id: '/muse/elements/raw_fft1',
+      values: []
+    },
+    '/muse/elements/raw_fft2': {
+      id: '/muse/elements/raw_fft2',
+      values: []
+    },
+    '/muse/elements/raw_fft3': {
+      id: '/muse/elements/raw_fft3',
+      values: []
+    },
+    '/muse/elements/alpha_absolute': {
+      id: '/muse/elements/alpha_absolute',
+      leftEar: 0,
+      leftFront: 0,
+      rightFront: 0,
+      rightEar: 0,
+      mean: 0
+     },
+    '/muse/elements/beta_absolute': {
+      id: '/muse/elements/beta_absolute',
+      leftEar: 0,
+      leftFront: 0,
+      rightFront: 0,
+      rightEar: 0,
+      mean: 0
+     }
+     ,
+    '/muse/elements/delta_absolute': {
+      id: '/muse/elements/delta_absolute',
+      leftEar: 0,
+      leftFront: 0,
+      rightFront: 0,
+      rightEar: 0,
+      mean: 0
+     }
+     ,
+    '/muse/elements/gamma_absolute': {
+      id: '/muse/elements/gamma_absolute',
+      leftEar: 0,
+      leftFront: 0,
+      rightFront: 0,
+      rightEar: 0,
+      mean: 0
+     }
+     ,
+    '/muse/elements/theta_absolute': {
+      id: '/muse/elements/theta_absolute',
+      leftEar: 0,
+      leftFront: 0,
+      rightFront: 0,
+      rightEar: 0,
+      mean: 0
+     }
+     
+  };
+  return zeroes[id];
+
 }
 
 

@@ -195,7 +195,7 @@ function rawFFTString(d) {
     return d.id + '     ' + arrstring;
 }
 
-
+/*
 function listenToAll(m) {
     //TODO put listenTo onto library level and add it on demand
     //add alpha_relative etc by default
@@ -222,7 +222,7 @@ function listenToAll(m) {
     m.listenTo('/muse/elements/gamma_absolute');
     m.listenTo('/muse/elements/theta_absolute');
 }
-
+*/
 
 
 /*
