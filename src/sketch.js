@@ -1,31 +1,25 @@
-//connection to muse
-//muse = museData().connection('http://127.0.0.1:8081');
 
-//connection with dummyData
 var muse = null;
-//museData().dummyData();
-//musefake = museData().dummyData();
 
 var STATE_REAL = 'real';
 var STATE_DUMMY = 'dummy';
 var state = STATE_REAL;
 
-var hans = 'dudud';
-
 function setup() {
     createCanvas(800, 600);
     frameRate(5);
 
-    console.log('hanse ' + hans );
     console.log('state in setup: ' + state);
 
     if(state == STATE_REAL){
         //TODO change to musedata.connect() with url as option, but use a default
-        muse = museData().connection('http://127.0.0.1:8081');
+        //muse = museData().connection('http://127.0.0.1:8081');
+        muse = musedata().connect();
     }
     else {
         //TODO changed to musedata().fake()
-        muse = museData().dummyData();
+        muse = musedata().fake();
+        //muse = museData().dummyData();
     }
     listenToAll(muse);
 
@@ -145,14 +139,14 @@ function keyTyped() {
         state = STATE_DUMMY;
         muse.stop();
         muse = null;
-        muse = museData().dummyData();
+        muse = musedata().fake();
         listenToAll(muse);
         muse.start();
     } else if (state == STATE_DUMMY) {
         state = STATE_REAL;
         muse.stop();
         muse = null;
-        muse = museData().connection('http://127.0.0.1:8081');
+        muse = musedata().connect();
         listenToAll(muse);
         muse.start();
     }

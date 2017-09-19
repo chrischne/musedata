@@ -7,41 +7,40 @@
   Version: 2.0.0
   
 */
-function museData() {
+function musedata() {
+
+  var defaultURL = 'http://127.0.0.1:8081';
 
   //TODO change my to md
-  function my() {
+  function md() {
     // generate chart here, using `width` and `height`
   }
 
-  my.connection = function(url) {
+  md.connect = function(url) {
     //TODO connect to default url when no url is given
-    console.log('museData.connection');
-    if (!arguments.length) {
+    console.log('museData.connect');
+   /* if (!arguments.length) {
       console.log('museData.connection: no url for websocket specified');
       return null;
-    }
-    return museConnector(url);
+    }*/
+    console.log('arguments.length',arguments.length);
+    var _url = arguments.length == 0 ? defaultURL : url;
+    return museConnection(_url);
   };
 
   //TODO change to fakeData
-  my.dummyData = function(interval) {
-    if (!arguments.length) {
-      return dummyConnector();
-    }
-    return dummyConnector(interval);
+  md.fake = function() {
+      return fakeConnection();
   };
 
-  return my;
+  return md;
 
 }
 
 
 
-function museConnector(_url) {
+function museConnection(_url) {
 
-
-  
   var url = _url;
   // var ws = null;
   var socket = null;
@@ -58,6 +57,7 @@ function museConnector(_url) {
   my.start = function() {
     console.log('museConnector.start');
     //ws = new WebSocket(url);
+    console.log('url',url);
     socket = io.connect(url);
     console.log('socket', socket);
     // ws.onmessage = this.onMsg;
@@ -143,11 +143,11 @@ function museConnector(_url) {
 }
 
 
-function dummyConnector(_interval) {
+function fakeConnection() {
 
-  console.log('dummyConnector');
+  console.log('fakeConnection');
   var ws = null;
-  var interval = _interval ? _interval : (1000 / 250);
+  var interval = 1000 / 250;
   var callbacks = [];
   var intervalID = null;
   var data = [];
@@ -160,7 +160,6 @@ function dummyConnector(_interval) {
   function my() {
 
     //console.log('my');
-
 
   }
 
