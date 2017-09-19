@@ -68,6 +68,13 @@ function draw() {
     var gamma_absolute = muse.get('/muse/elements/gamma_absolute');
     var theta_absolute = muse.get('/muse/elements/theta_absolute');
 
+    //convenience functions
+    var _alpha = muse.getAlpha();
+    var _beta = muse.getBeta();
+    var _gamma = muse.getGamma();
+    var _delta = muse.getDelta();
+    var _theta = muse.getTheta();
+
 
     push();
     var gap = 20;
@@ -119,6 +126,16 @@ function draw() {
     drawRawFFT(raw_fft2);
     translate(0, gap);
     drawRawFFT(raw_fft3);
+    translate(0, gap);
+    drawConvenience('getDelta',_delta);
+    translate(0, gap);
+    drawConvenience('getTheta',_theta);
+    translate(0, gap);
+    drawConvenience('getAlpha',_alpha);
+    translate(0, gap);
+    drawConvenience('getBeta',_beta);
+    translate(0, gap);
+    drawConvenience('getGamma',_gamma);
     pop();
 }
 
@@ -138,6 +155,10 @@ function keyTyped() {
         muse = musedata.connect();
     }
     loop();
+}
+
+function drawConvenience(title,value){
+     text(title + ' ' + nf(value,null,3), 0, 0);
 }
 
 function drawOneValue(data) {

@@ -30,6 +30,7 @@
 
   function museConnection(_url) {
 
+    
     var url = _url;
     var socket = null;
     var callbacks = [];
@@ -61,7 +62,7 @@
       //check if we already registered _id
       if (!callbacks[_id]) {
         callbacks[_id] = getCallback(_id);
-        dataContainer[_id] = {};
+        dataContainer[_id] = zeroObj(_id);
       } else {
         console.log('already listening to ' + _id);
       }
@@ -95,11 +96,31 @@
         my.listenTo(_id);
         return zeroObj(_id);
       }
-
       return dataContainer[_id];
     };
 
+    my.getDelta = function(){    
+      return getSingleValue(my,'/muse/elements/delta_relative');
+    }
+
+    my.getTheta = function(){    
+      return getSingleValue(my,'/muse/elements/theta_relative');
+    }
+
+    my.getAlpha = function(){    
+      return getSingleValue(my,'/muse/elements/alpha_relative');
+    }
+
+    my.getBeta = function(){    
+      return getSingleValue(my,'/muse/elements/beta_relative');
+    }
+
+    my.getGamma = function(){    
+      return getSingleValue(my,'/muse/elements/gamma_relative');
+    }
+
     my.init = function() {
+      my.listenTo('/muse/elements/is_good');
       my.start();
       return my;
     }
@@ -130,7 +151,7 @@
       //check if we already registered _id
       if (!callbacks[_id]) {
         callbacks[_id] = getCallback(_id);
-        dataContainer[_id] = {};
+        dataContainer[_id] = zeroObj(_id);
       } else {
         console.log('already listening to ' + _id);
       }
@@ -179,7 +200,29 @@
       return dataContainer[_id];
     };
 
+    my.getDelta = function(){    
+      return getSingleValue(my,'/muse/elements/delta_relative');
+    }
+
+    my.getTheta = function(){    
+      return getSingleValue(my,'/muse/elements/theta_relative');
+    }
+
+    my.getAlpha = function(){    
+      return getSingleValue(my,'/muse/elements/alpha_relative');
+    }
+
+    my.getBeta = function(){    
+      return getSingleValue(my,'/muse/elements/beta_relative');
+    }
+
+    my.getGamma = function(){    
+      return getSingleValue(my,'/muse/elements/gamma_relative');
+    }
+
+
     my.init = function() {
+      my.listenTo('/muse/elements/is_good');
       my.start();
       return my;
     }
@@ -405,13 +448,43 @@
 
 
   function calcMean(arr) {
+    if(arr.length == 0){
+      return 0;
+    }
     return calcSum(arr) / arr.length;
   }
 
   function calcSum(arr) {
+    if(arr.length == 0){
+      return 0;
+    }
     return arr.reduce(function(previousValue, currentValue) {
       return currentValue + previousValue;
     });
+  }
+
+  var elektrodeKeys = ['leftEar','leftFront','rightFront','rightFront'];
+
+  function getSingleValue(museObj,id){
+      var data = museObj.get(id);
+      var is_good =  museObj.get('/muse/elements/is_good');
+
+      var arr = [];
+      elektrodeKeys.forEach(function(key){
+          if(is_good[key] == 1){
+            arr.push(data[key]);
+          }
+      });
+
+      var mean = calcMean(arr);
+      if(isNaN(mean)){
+        console.log('mean is ' + mean);
+        console.log(arr);
+        console.log(data);
+        console.log(id);
+      }
+
+      return arr.length == 0 ? 0 : calcMean(arr);
   }
 
 
