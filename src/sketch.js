@@ -12,20 +12,16 @@ function setup() {
     console.log('state in setup: ' + state);
 
     if(state == STATE_REAL){
-        //TODO change to musedata.connect() with url as option, but use a default
-        //muse = museData().connection('http://127.0.0.1:8081');
         muse = musedata().connect();
     }
     else {
-        //TODO changed to musedata().fake()
         muse = musedata().fake();
-        //muse = museData().dummyData();
     }
-    listenToAll(muse);
+    //listenToAll(muse);
 
     //start data transmission
     //TODO move muse.start() onto library level to make things less complicated
-    muse.start();
+    //muse.start();
 }
 
 function draw() {
