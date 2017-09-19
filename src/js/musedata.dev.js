@@ -8,6 +8,7 @@
   
 */
 (function(global) {
+  "use strict";
   // the function code comes here
   function musedata() {
 
@@ -101,29 +102,29 @@
 
     my.getDelta = function(){    
       return getSingleValue(my,'/muse/elements/delta_relative');
-    }
+    };
 
     my.getTheta = function(){    
       return getSingleValue(my,'/muse/elements/theta_relative');
-    }
+    };
 
     my.getAlpha = function(){    
       return getSingleValue(my,'/muse/elements/alpha_relative');
-    }
+    };
 
     my.getBeta = function(){    
       return getSingleValue(my,'/muse/elements/beta_relative');
-    }
+    };
 
     my.getGamma = function(){    
       return getSingleValue(my,'/muse/elements/gamma_relative');
-    }
+    };
 
     my.init = function() {
       my.listenTo('/muse/elements/is_good');
       my.start();
       return my;
-    }
+    };
 
     return my.init();
   } //museConnection
@@ -202,30 +203,30 @@
 
     my.getDelta = function(){    
       return getSingleValue(my,'/muse/elements/delta_relative');
-    }
+    };
 
     my.getTheta = function(){    
       return getSingleValue(my,'/muse/elements/theta_relative');
-    }
+    };
 
     my.getAlpha = function(){    
       return getSingleValue(my,'/muse/elements/alpha_relative');
-    }
+    };
 
     my.getBeta = function(){    
       return getSingleValue(my,'/muse/elements/beta_relative');
-    }
+    };
 
     my.getGamma = function(){    
       return getSingleValue(my,'/muse/elements/gamma_relative');
-    }
+    };
 
 
     my.init = function() {
       my.listenTo('/muse/elements/is_good');
       my.start();
       return my;
-    }
+    };
 
     return my.init();
   }

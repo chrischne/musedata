@@ -1,5 +1,5 @@
 
-//var muse = null;
+var muse = null;
 
 var STATE_REAL = 'real';
 var STATE_FAKE = 'fake';
@@ -10,7 +10,6 @@ function setup() {
     frameRate(5);
     if(state == STATE_REAL){
         muse = musedata.connect();
-        //muse.connect();
     }
     else {
         muse = musedata.fake();

@@ -1,4 +1,6 @@
 function exampleData() {
+    "use strict";
+    
     return [
         [1435306984.407, '/muse/acc', -19.53128, 1011.72034, 117.18768],
         [1435306984.556, '/muse/config', '\'{"drlref_conversion_factor": 3225.806396484375', '"acc_sample_frequency_hz": 50', '"battery_percent_remaining": 8', '"eeg_downsample": 16', '"notch_frequency_hz": 60', '"eeg_locations": [45', 2.0, 4.0, '55]', '"eeg_units": 2', '"eeg_output_frequency_hz": 220', '"eeg_conversion_factor": 1.6449803113937378', '"eeg_channel_layout": "TP9 FP1 FP2 TP10 "', '"acc_data_enabled": true', '"eeg_sample_frequency_hz": 3520', '"mac_addr": "0006666F848C"', '"preset": "14"', '"drlref_sample_frequency_hz": 10', '"serial_number": "1180-F3HE-848C"', '"filters_enabled": true', '"battery_millivolts": 3614', '"acc_units": 2', '"battery_data_enabled": true', '"afe_gain": 1961.0', '"compression_enabled": true', '"eeg_channel_count": 4', '"error_data_enabled": true', '"acc_conversion_factor": 3.9062561988830566', '"eeg_samples_bitwidth": 10', '"drlref_data_enabled": true}\''],
