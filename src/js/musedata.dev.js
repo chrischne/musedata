@@ -11,75 +11,50 @@ function musedata() {
 
   var defaultURL = 'http://127.0.0.1:8081';
 
-  //TODO change my to md
-  function md() {
-    // generate chart here, using `width` and `height`
-  }
+  function md() {}
 
   md.connect = function(url) {
-    //TODO connect to default url when no url is given
     console.log('museData.connect');
-   /* if (!arguments.length) {
-      console.log('museData.connection: no url for websocket specified');
-      return null;
-    }*/
-    console.log('arguments.length',arguments.length);
     var _url = arguments.length == 0 ? defaultURL : url;
     return museConnection(_url);
   };
 
-  //TODO change to fakeData
   md.fake = function() {
-      return fakeConnection();
+    return fakeConnection();
   };
 
   return md;
-
 }
-
-
 
 function museConnection(_url) {
 
   var url = _url;
-  // var ws = null;
   var socket = null;
   var callbacks = [];
 
   //contains the current data for each listened id
   var dataContainer = [];
 
-  function my() {
-    
-  }
+  function my() {}
 
   //TODO, call this already in the beginning or so, so the user doesnt have to do it
   my.start = function() {
-    console.log('museConnector.start');
-    //ws = new WebSocket(url);
-    console.log('url',url);
+    console.log('museConnection.start()');
+    console.log('url', url);
     socket = io.connect(url);
     console.log('socket', socket);
-    // ws.onmessage = this.onMsg;
     socket.on('muse', this.onMsg);
 
     return my;
   };
 
   my.stop = function() {
-    console.log('museConnector.stop');
-    /*ws.onclose = function() {};
-    ws.close();
-    ws = null;*/
+    console.log('museConnection.stop()');
     socket.disconnect();
   };
 
   my.listenTo = function(_id) {
-    console.log('museConnector.listenTo');
-    //maybe here better to make and objec {id: callback: }
-    //or maybe better not. 
-    //  callbacks[_id] = _cb;
-    //return my;
+    console.log('museConnection.listenTo()');
 
     //check if we already registered _id
     if (!callbacks[_id]) {
@@ -91,19 +66,12 @@ function museConnection(_url) {
   };
 
   my.onMsg = function(obj) {
-    //console.log('museConnector.onMsg: ',obj);
-    //var msg = obj.split(',');
-
     //convert numbers to numbers
     var msg = obj.map(function(d) {
-      if (isNaN(d)) {
-        return d;
-      }
-      return +d;
+      return isNaN(d) ? d : +d;
     });
 
     var id = msg[0];
-    //  console.log('id',id);
     var cback = callbacks[id];
 
     if (cback) {
@@ -112,43 +80,35 @@ function museConnection(_url) {
     }
 
     return my;
-
   };
 
   my.disconnect = function() {
-    console.log('museConnector.disconnect');
+    console.log('museConnection.disconnect()');
     ws.close();
   };
 
-  //TODO invoke a listenTo if id is not there, lazy init
-  //maybe make a list of valid ids
-  //and if id is not in the list, then throw and error
   my.get = function(_id) {
     if (!dataContainer[_id]) {
       console.log('invoking listenTo ' + _id);
       my.listenTo(_id);
-      //console.log('make sure you call museData().listenTo( ' + _id + ')');
       return zeroObj(_id);
     }
 
     return dataContainer[_id];
   };
 
-  my.init = function(){
-
+  my.init = function() {
     my.start();
-
     return my;
   }
 
   return my.init();
-
 }
-
 
 function fakeConnection() {
 
   console.log('fakeConnection');
+
   var ws = null;
   var interval = 1000 / 250;
   var callbacks = [];
@@ -160,76 +120,42 @@ function fakeConnection() {
   var dataContainer = [];
 
 
-  function my() {
-
-    //console.log('my');
-
-  }
-
-
-
-  /*my.listenTo = function(_id, _cb) {
-    console.log('dummyConnector.listenTo');
-
-    callbacks[_id] = _cb;
-    console.log('callbacks', callbacks);
-    return my;
-  }*/
+  function my() {}
 
   my.listenTo = function(_id) {
-    console.log('dummyConnector.listenTo');
+    console.log('fakeConnection.listenTo()');
 
     //check if we already registered _id
     if (!callbacks[_id]) {
       callbacks[_id] = getCallback(_id);
       dataContainer[_id] = {};
-      console.log('now listening to ' + _id);
     } else {
       console.log('already listening to ' + _id);
     }
-
   };
 
-  var secondround = false;
-
   my.onMsg = function() {
-    // console.log('dummyConnector.onMsg',msgIndex,data.length);
-
     if (msgIndex >= data.length) {
       msgIndex = 0;
       console.log('resetting msgIndex to ' + msgIndex);
-      secondround = true;
     }
     var msg = data[msgIndex].slice();
 
     msgIndex++;
-
-
     msg.shift();
 
-    /*if(secondround){
-      console.log('msg',msg);
-    }*/
-
-
-
     var id = msg[0];
-
-
-
     var cback = callbacks[id];
 
     if (cback) {
-
       var jsonobj = cback(msg);
-      //console.log(jsonobj);
       dataContainer[jsonobj.id] = jsonobj;
     }
     return my;
   };
 
   my.start = function() {
-    console.log('dummyConnector.start');
+    console.log('fakeConnection.start()');
     data = exampleData();
     intervalID = setInterval(this.onMsg, interval);
     return my;
@@ -237,43 +163,30 @@ function fakeConnection() {
   };
 
   my.stop = function() {
-    console.log('dummyConnector.stop');
+    console.log('fakeConnection.stop()');
     clearInterval(intervalID);
     return my;
   };
 
   my.get = function(_id) {
     if (!dataContainer[_id]) {
-      /*console.log('museData: no data available for id ' + _id);
-      console.log('make sure you call museData().listenTo( ' + _id + ')');
-      return {
-        id: _id,
-        value: 0
-      };*/
       console.log('invoking listenTo ' + _id);
       my.listenTo(_id);
-      //console.log('make sure you call museData().listenTo( ' + _id + ')');
       return zeroObj(_id);
     }
-
     return dataContainer[_id];
   };
 
-
-  my.init = function(){
+  my.init = function() {
     my.start();
     return my;
   }
 
-
-
   return my.init();
-
 }
 
 
 function getCallback(_id) {
-
 
   var emptyParser = function(msg) {
     return {};
@@ -287,17 +200,13 @@ function getCallback(_id) {
   };
 
   var arrParser = function(msg) {
-
     var _id = msg[0];
-    //  console.log('arrParser: id: ' + _id );
     var _values = msg.slice(1);
     return {
       id: _id,
       values: _values
     };
   };
-
-
 
   var regularParser = function(msg) {
     return {
@@ -308,7 +217,6 @@ function getCallback(_id) {
       rightEar: msg[4]
     };
   };
-
 
   var regularParserMean = function(msg) {
 
@@ -345,9 +253,9 @@ function getCallback(_id) {
   return fn[_id] ? fn[_id] : emptyParser;
 }
 
-function zeroObj(id){
+function zeroObj(id) {
 
-    var zeroes = {
+  var zeroes = {
     '/muse/eeg': {
       id: '/muse/eeg',
       leftEar: 0,
@@ -396,7 +304,7 @@ function zeroObj(id){
       rightEar: 0,
       mean: 0
     },
-    '/muse/elements/horseshoe':  {
+    '/muse/elements/horseshoe': {
       id: '/muse/elements/horseshoe',
       leftEar: 0,
       leftFront: 0,
@@ -453,7 +361,7 @@ function zeroObj(id){
       rightFront: 0,
       rightEar: 0,
       mean: 0
-     },
+    },
     '/muse/elements/beta_absolute': {
       id: '/muse/elements/beta_absolute',
       leftEar: 0,
@@ -461,8 +369,7 @@ function zeroObj(id){
       rightFront: 0,
       rightEar: 0,
       mean: 0
-     }
-     ,
+    },
     '/muse/elements/delta_absolute': {
       id: '/muse/elements/delta_absolute',
       leftEar: 0,
@@ -470,8 +377,7 @@ function zeroObj(id){
       rightFront: 0,
       rightEar: 0,
       mean: 0
-     }
-     ,
+    },
     '/muse/elements/gamma_absolute': {
       id: '/muse/elements/gamma_absolute',
       leftEar: 0,
@@ -479,8 +385,7 @@ function zeroObj(id){
       rightFront: 0,
       rightEar: 0,
       mean: 0
-     }
-     ,
+    },
     '/muse/elements/theta_absolute': {
       id: '/muse/elements/theta_absolute',
       leftEar: 0,
@@ -488,14 +393,12 @@ function zeroObj(id){
       rightFront: 0,
       rightEar: 0,
       mean: 0
-     }
-     
+    }
+
   };
+
   return zeroes[id];
-
 }
-
-
 
 function calcMean(arr) {
   return calcSum(arr) / arr.length;
