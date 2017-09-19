@@ -29,6 +29,7 @@ function draw() {
     background(255);
 
     if(muse == null){
+        console.log('muse == null');
         background('red');
         return;
     }
@@ -41,6 +42,7 @@ function draw() {
         background('green');
     }
     else {
+        console.log('state == ' + state);
         background('red');
         return;
     }
@@ -136,15 +138,15 @@ function keyTyped() {
         muse.stop();
         muse = null;
         muse = musedata().fake();
-        listenToAll(muse);
-        muse.start();
+       // listenToAll(muse);
+       // muse.start();
     } else if (state == STATE_DUMMY) {
         state = STATE_REAL;
         muse.stop();
         muse = null;
         muse = musedata().connect();
-        listenToAll(muse);
-        muse.start();
+      //  listenToAll(muse);
+       // muse.start();
     }
     loop();
 }

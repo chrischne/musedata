@@ -244,20 +244,30 @@ function fakeConnection() {
 
   my.get = function(_id) {
     if (!dataContainer[_id]) {
-      console.log('museData: no data available for id ' + _id);
+      /*console.log('museData: no data available for id ' + _id);
       console.log('make sure you call museData().listenTo( ' + _id + ')');
       return {
         id: _id,
         value: 0
-      };
+      };*/
+      console.log('invoking listenTo ' + _id);
+      my.listenTo(_id);
+      //console.log('make sure you call museData().listenTo( ' + _id + ')');
+      return zeroObj(_id);
     }
 
     return dataContainer[_id];
   };
 
 
+  my.init = function(){
+    my.start();
+    return my;
+  }
 
-  return my;
+
+
+  return my.init();
 
 }
 
