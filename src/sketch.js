@@ -1,5 +1,5 @@
 
-var muse = null;
+//var muse = null;
 
 var STATE_REAL = 'real';
 var STATE_FAKE = 'fake';
@@ -9,10 +9,11 @@ function setup() {
     createCanvas(800, 600);
     frameRate(5);
     if(state == STATE_REAL){
-        muse = musedata().connect();
+        muse = musedata.connect();
+        //muse.connect();
     }
     else {
-        muse = musedata().fake();
+        muse = musedata.fake();
     }
 }
 
@@ -129,12 +130,12 @@ function keyTyped() {
         state = STATE_FAKE;
         muse.stop();
         muse = null;
-        muse = musedata().fake();
+        muse = musedata.fake();
     } else if (state == STATE_FAKE) {
         state = STATE_REAL;
         muse.stop();
         muse = null;
-        muse = musedata().connect();
+        muse = musedata.connect();
     }
     loop();
 }
