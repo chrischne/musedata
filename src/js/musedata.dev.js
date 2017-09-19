@@ -50,8 +50,10 @@ function museConnection(_url) {
   var dataContainer = [];
 
   function my() {
-    console.log('museConnector.my');
+    
   }
+
+
 
   //TODO, call this already in the beginning or so, so the user doesnt have to do it
   my.start = function() {
@@ -138,7 +140,47 @@ function museConnection(_url) {
     return dataContainer[_id];
   };
 
-  return my;
+  my.init = function(){
+
+    //TODO check if identifier is valid and and listen to it in get
+    //listen to a bunch of signals which are likely to be used
+    my.listenTo('/muse/elements/alpha_relative');
+    my.listenTo('/muse/elements/beta_relative');
+    my.listenTo('/muse/elements/delta_relative');
+    my.listenTo('/muse/elements/gamma_relative');
+    my.listenTo('/muse/elements/theta_relative');
+    my.listenTo('/muse/elements/horseshoe');
+    //my.listenTo('/muse/elements/experimental/concentration');
+    //my.listenTo('/muse/elements/experimental/mellow');
+  /*  my.listenTo('/muse/eeg');
+    my.listenTo('/muse/elements/alpha_relative');
+    my.listenTo('/muse/elements/beta_relative');
+    my.listenTo('/muse/elements/delta_relative');
+    my.listenTo('/muse/elements/gamma_relative');
+    my.listenTo('/muse/elements/theta_relative');
+    my.listenTo('/muse/elements/horseshoe');
+    my.listenTo('/muse/elements/is_good');
+    my.listenTo('/muse/elements/blink');
+    my.listenTo('/muse/elements/jaw_clench');
+    my.listenTo('/muse/elements/touching_forehead');
+    my.listenTo('/muse/elements/experimental/concentration');
+    my.listenTo('/muse/elements/experimental/mellow');
+    my.listenTo('/muse/elements/raw_fft0');
+    my.listenTo('/muse/elements/raw_fft1');
+    my.listenTo('/muse/elements/raw_fft2');
+    my.listenTo('/muse/elements/raw_fft3');
+    my.listenTo('/muse/elements/alpha_absolute');
+    my.listenTo('/muse/elements/beta_absolute');
+    my.listenTo('/muse/elements/delta_absolute');
+    my.listenTo('/muse/elements/gamma_absolute');
+    my.listenTo('/muse/elements/theta_absolute');*/
+
+    my.start();
+
+    return my;
+  }
+
+  return my.init();
 
 }
 
@@ -162,6 +204,8 @@ function fakeConnection() {
     //console.log('my');
 
   }
+
+
 
   /*my.listenTo = function(_id, _cb) {
     console.log('dummyConnector.listenTo');
