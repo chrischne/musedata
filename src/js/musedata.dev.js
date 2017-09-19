@@ -40,6 +40,8 @@ function museData() {
 
 function museConnector(_url) {
 
+
+  
   var url = _url;
   // var ws = null;
   var socket = null;
@@ -187,7 +189,7 @@ function dummyConnector(_interval) {
   var secondround = false;
 
   my.onMsg = function() {
-   // console.log('dummyConnector.onMsg',msgIndex,data.length);
+    // console.log('dummyConnector.onMsg',msgIndex,data.length);
 
     if (msgIndex >= data.length) {
       msgIndex = 0;
@@ -195,7 +197,7 @@ function dummyConnector(_interval) {
       secondround = true;
     }
     var msg = data[msgIndex].slice();
-    
+
     msgIndex++;
 
 
@@ -205,7 +207,6 @@ function dummyConnector(_interval) {
       console.log('msg',msg);
     }*/
 
-    
 
 
     var id = msg[0];
