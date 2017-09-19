@@ -2,7 +2,7 @@
 var muse = null;
 
 var STATE_REAL = 'real';
-var STATE_DUMMY = 'dummy';
+var STATE_FAKE = 'fake';
 var state = STATE_REAL;
 
 function setup() {
@@ -30,7 +30,7 @@ function draw() {
     if(state == STATE_REAL){
     	background('pink');
     }
-    else if(state == STATE_DUMMY){
+    else if(state == STATE_FAKE){
         background('green');
     }
     else {
@@ -126,11 +126,11 @@ function keyTyped() {
     noLoop();
     console.log('key' + key);
     if (state == STATE_REAL) {
-        state = STATE_DUMMY;
+        state = STATE_FAKE;
         muse.stop();
         muse = null;
         muse = musedata().fake();
-    } else if (state == STATE_DUMMY) {
+    } else if (state == STATE_FAKE) {
         state = STATE_REAL;
         muse.stop();
         muse = null;
